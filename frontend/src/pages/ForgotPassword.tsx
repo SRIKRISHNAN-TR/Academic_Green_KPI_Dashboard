@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/services/apiClient";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -17,15 +18,22 @@ export default function ForgotPassword() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-
-    setIsLoading(false);
-    setIsSubmitted(true);
-    toast({
-      title: "Email sent!",
-      description: "Check your inbox for password reset instructions.",
-    });
+    try {
+      await apiClient.post("/auth/forgot-password", { email });
+      setIsSubmitted(true);
+      toast({
+        title: "Email sent!",
+        description: "Check your inbox for your temporary password.",
+      });
+    } catch (err: any) {
+      toast({
+        title: "Error",
+        description: err.message || "Could not send reset email. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,7 +51,7 @@ export default function ForgotPassword() {
           <CardHeader className="space-y-1">
             <CardTitle className="text-xl">Reset password</CardTitle>
             <CardDescription>
-              Enter your email address and we'll send you a reset link
+              Enter your email address and we'll send you a temporary password
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -55,7 +63,7 @@ export default function ForgotPassword() {
                 <div className="space-y-2">
                   <h3 className="font-medium">Check your email</h3>
                   <p className="text-sm text-muted-foreground">
-                    We've sent a password reset link to <strong>{email}</strong>
+                    We've sent a temporary password to <strong>{email}</strong>. Use it to log in and change your password.
                   </p>
                 </div>
                 <Button asChild variant="outline" className="w-full">
@@ -84,7 +92,7 @@ export default function ForgotPassword() {
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Sending..." : "Send reset link"}
+                  {isLoading ? "Sending..." : "Send temporary password"}
                 </Button>
 
                 <Button asChild variant="ghost" className="w-full">

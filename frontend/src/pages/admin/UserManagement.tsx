@@ -5,39 +5,53 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
-import { IconSearch, IconPlus, IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconSearch, IconTrash } from "@tabler/icons-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Navigate } from "react-router-dom";
-
-const users = [
-  { id: "1", name: "Dr. Sarah Green", email: "admin@university.edu", role: "admin", department: "Sustainability Office", status: "active" },
-  { id: "2", name: "John Smith", email: "dataentry@university.edu", role: "data-entry", department: "Facilities", status: "active" },
-  { id: "3", name: "Prof. Emily Brown", email: "viewer@university.edu", role: "viewer", department: "Environmental Sciences", status: "active" },
-  { id: "4", name: "Michael Davis", email: "mdavis@university.edu", role: "viewer", department: "Management", status: "inactive" },
-  { id: "5", name: "Lisa Johnson", email: "ljohnson@university.edu", role: "data-entry", department: "Operations", status: "pending" },
-];
+import { useUsers, useDeleteUser } from "@/hooks/useApi";
+import { useToast } from "@/hooks/use-toast";
+import { useState } from "react";
 
 export default function UserManagement() {
   const { user } = useAuth();
+  const { toast } = useToast();
+  const { data: users, isLoading } = useUsers();
+  const deleteUser = useDeleteUser();
+  const [search, setSearch] = useState("");
 
   if (user?.role !== "admin") {
     return <Navigate to="/dashboard" replace />;
   }
 
+  const filtered = (users || []).filter(
+    (u) =>
+      u.username.toLowerCase().includes(search.toLowerCase()) ||
+      u.email.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteUser.mutateAsync(id);
+      toast({ title: "User deleted" });
+    } catch {
+      toast({ title: "Delete failed", variant: "destructive" });
+    }
+  };
+
+  const getRoleBadge = (role: string) => {
+    if (role === "admin") return "default";
+    if (role === "data-entry") return "secondary";
+    return "outline";
+  };
+
   return (
     <DashboardLayout title="User Management">
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
-            <p className="text-muted-foreground">
-              Manage user accounts and permissions.
-            </p>
-          </div>
-          <Button>
-            <IconPlus className="mr-2 size-4" />
-            Add User
-          </Button>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">User Management</h2>
+          <p className="text-muted-foreground">
+            Manage user accounts and permissions.
+          </p>
         </div>
 
         <Card>
@@ -45,75 +59,79 @@ export default function UserManagement() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Users</CardTitle>
-                <CardDescription>{users.length} total users</CardDescription>
+                <CardDescription>
+                  {isLoading ? "Loading..." : `${filtered.length} total users`}
+                </CardDescription>
               </div>
               <div className="relative w-64">
                 <IconSearch className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
-                <Input placeholder="Search users..." className="pl-8" />
+                <Input
+                  placeholder="Search users..."
+                  className="pl-8"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
             </div>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>User</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Department</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users.map((u) => (
-                  <TableRow key={u.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="size-8">
-                          <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                            {u.name.split(" ").map((n) => n[0]).join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium">{u.name}</p>
-                          <p className="text-sm text-muted-foreground">{u.email}</p>
+            {filtered.length > 0 ? (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>User</TableHead>
+                    <TableHead>Role</TableHead>
+                    <TableHead>Created</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filtered.map((u) => (
+                    <TableRow key={u._id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <Avatar className="size-8">
+                            <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                              {u.username
+                                .split(" ")
+                                .map((n) => n[0])
+                                .join("")
+                                .toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium">{u.username}</p>
+                            <p className="text-sm text-muted-foreground">{u.email}</p>
+                          </div>
                         </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {u.role.replace("-", " ")}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{u.department}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={u.status === "active" ? "default" : "secondary"}
-                        className={
-                          u.status === "active"
-                            ? "bg-primary"
-                            : u.status === "pending"
-                            ? "bg-amber-100 text-amber-700"
-                            : ""
-                        }
-                      >
-                        {u.status.charAt(0).toUpperCase() + u.status.slice(1)}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon">
-                          <IconEdit className="size-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" className="text-destructive">
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={getRoleBadge(u.role)} className="capitalize">
+                          {u.role.replace("-", " ")}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-sm text-muted-foreground">
+                        {new Date(u.createdAt).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-destructive"
+                          onClick={() => handleDelete(u._id)}
+                        >
                           <IconTrash className="size-4" />
                         </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            ) : (
+              <p className="py-6 text-center text-muted-foreground">
+                {isLoading ? "Loading users..." : "No users found."}
+              </p>
+            )}
           </CardContent>
         </Card>
       </div>

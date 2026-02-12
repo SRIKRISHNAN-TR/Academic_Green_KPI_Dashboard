@@ -1,4 +1,5 @@
 const Energy = require("../models/Energy");
+const { checkAndCreateAlert } = require("./notification.controller");
 
 exports.getAll = async (req, res) => {
   try {
@@ -23,6 +24,7 @@ exports.getById = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const doc = await Energy.create({ ...req.body, metric: "ENERGY" });
+    await checkAndCreateAlert("ENERGY", doc);
     res.status(201).json(doc);
   } catch (err) { res.status(400).json({ message: err.message }); }
 };

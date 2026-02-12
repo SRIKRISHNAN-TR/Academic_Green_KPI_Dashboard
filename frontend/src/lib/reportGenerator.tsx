@@ -33,11 +33,11 @@ export async function generatePDF(data: ReportData) {
   doc.text(`Period: ${data.dateRange}`, 14, 46);
   doc.text(`Generated: ${new Date().toLocaleDateString()}`, 14, 53);
 
-  // Summary
-  const totalActual = data.records.reduce((s, r) => s + r.actual, 0);
-  const totalTarget = data.records.reduce((s, r) => s + r.target, 0);
+  // Summary - sanitize all values
+  const totalActual = data.records.reduce((s, r) => s + (r.actual || 0), 0);
+  const totalTarget = data.records.reduce((s, r) => s + (r.target || 0), 0);
   const overTarget = data.records.filter(
-    (r) => data.kpiType === "Waste Management" ? r.actual < r.target : r.actual > r.target
+    (r) => data.kpiType === "Waste Management" ? (r.actual || 0) < (r.target || 0) : (r.actual || 0) > (r.target || 0)
   );
 
   doc.setFontSize(14);
@@ -50,14 +50,14 @@ export async function generatePDF(data: ReportData) {
 
   // Table
   const tableData = data.records.map((r) => [
-    `${r.month} ${r.year}`,
-    r.location || data.location,
-    r.actual.toLocaleString(),
-    r.target.toLocaleString(),
-    r.status,
+    `${r.month || "—"} ${r.year || ""}`,
+    r.location || data.location || "—",
+    (r.actual ?? 0).toLocaleString(),
+    (r.target ?? 0).toLocaleString(),
+    r.status || "—",
     data.kpiType === "Waste Management"
-      ? r.actual >= r.target ? "✓ On Track" : "⚠ Below Target"
-      : r.actual <= r.target ? "✓ On Track" : "⚠ Over Target",
+      ? (r.actual ?? 0) >= (r.target ?? 0) ? "✓ On Track" : "⚠ Below Target"
+      : (r.actual ?? 0) <= (r.target ?? 0) ? "✓ On Track" : "⚠ Over Target",
   ]);
 
   autoTable(doc, {
@@ -73,10 +73,10 @@ export async function generatePDF(data: ReportData) {
 }
 
 export async function generateDOCX(data: ReportData) {
-  const totalActual = data.records.reduce((s, r) => s + r.actual, 0);
-  const totalTarget = data.records.reduce((s, r) => s + r.target, 0);
+  const totalActual = data.records.reduce((s, r) => s + (r.actual || 0), 0);
+  const totalTarget = data.records.reduce((s, r) => s + (r.target || 0), 0);
   const overTarget = data.records.filter(
-    (r) => data.kpiType === "Waste Management" ? r.actual < r.target : r.actual > r.target
+    (r) => data.kpiType === "Waste Management" ? (r.actual || 0) < (r.target || 0) : (r.actual || 0) > (r.target || 0)
   );
 
   const borderStyle = {
@@ -106,14 +106,14 @@ export async function generateDOCX(data: ReportData) {
     (r) =>
       new TableRow({
         children: [
-          `${r.month} ${r.year}`,
-          r.location || data.location,
-          r.actual.toLocaleString(),
-          r.target.toLocaleString(),
-          r.status,
+          `${r.month || "—"} ${r.year || ""}`,
+          r.location || data.location || "—",
+          (r.actual ?? 0).toLocaleString(),
+          (r.target ?? 0).toLocaleString(),
+          r.status || "—",
           data.kpiType === "Waste Management"
-            ? r.actual >= r.target ? "On Track" : "Below Target"
-            : r.actual <= r.target ? "On Track" : "Over Target",
+            ? (r.actual ?? 0) >= (r.target ?? 0) ? "On Track" : "Below Target"
+            : (r.actual ?? 0) <= (r.target ?? 0) ? "On Track" : "Over Target",
         ].map(
           (text) =>
             new TableCell({

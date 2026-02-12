@@ -1,4 +1,5 @@
 const Water = require("../models/Water");
+const { checkAndCreateAlert } = require("./notification.controller");
 
 exports.getAll = async (req, res) => {
   try {
@@ -20,8 +21,11 @@ exports.getById = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  try { res.status(201).json(await Water.create({ ...req.body, metric: "WATER" })); }
-  catch (err) { res.status(400).json({ message: err.message }); }
+  try {
+    const doc = await Water.create({ ...req.body, metric: "WATER" });
+    await checkAndCreateAlert("WATER", doc);
+    res.status(201).json(doc);
+  } catch (err) { res.status(400).json({ message: err.message }); }
 };
 
 exports.update = async (req, res) => {

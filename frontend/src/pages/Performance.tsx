@@ -16,9 +16,9 @@ interface PerformanceRow {
 }
 
 const fallbackData: PerformanceRow[] = [
-  { kpi: "Electricity Consumption", mtdActual: 28450, mtdTarget: 32000, ytdActual: 312000, ytdTarget: 380000, prevYear: 395000, unit: "kWh" },
-  { kpi: "Water Usage", mtdActual: 6230, mtdTarget: 7500, ytdActual: 68500, ytdTarget: 85000, prevYear: 91000, unit: "m³" },
-  { kpi: "Waste Diversion Rate", mtdActual: 68, mtdTarget: 70, ytdActual: 71, ytdTarget: 70, prevYear: 65, unit: "%" },
+  { kpi: "Electricity Consumption", mtdActual: 0, mtdTarget: 0, ytdActual: 0, ytdTarget: 0, prevYear: 0, unit: "kWh" },
+  { kpi: "Water Usage", mtdActual: 0, mtdTarget: 0, ytdActual: 0, ytdTarget: 0, prevYear: 0, unit: "m³" },
+  { kpi: "Waste Diversion Rate", mtdActual: 0, mtdTarget: 0, ytdActual: 0, ytdTarget: 0, prevYear: 0, unit: "%" },
 ];
 
 const getStatus = (actual: number, target: number, isLowerBetter: boolean = true): "success" | "warning" | "danger" => {

@@ -27,7 +27,12 @@ class ApiClient {
     if (res.status === 401) {
       localStorage.removeItem("greenKpiToken");
       localStorage.removeItem("greenKpiUser");
-      window.location.href = "/login";
+      // Don't redirect on public pages
+      const publicPaths = ["/dashboard", "/trends", "/summary", "/reports", "/data-entry", "/"];
+      const isPublicPage = publicPaths.some(p => window.location.pathname.startsWith(p));
+      if (!isPublicPage) {
+        window.location.href = "/login";
+      }
       throw new Error("Unauthorized");
     }
 

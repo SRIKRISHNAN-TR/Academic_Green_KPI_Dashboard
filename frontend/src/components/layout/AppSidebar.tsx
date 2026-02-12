@@ -50,16 +50,17 @@ interface NavItem {
   url: string;
   icon: React.ElementType;
   roles?: UserRole[];
+  publicVisible?: boolean;
 }
 
 const mainNavItems: NavItem[] = [
-  { title: "Dashboard", url: "/dashboard", icon: IconDashboard },
-  { title: "Trends", url: "/trends", icon: IconFileAnalytics },
-  { title: "Performance", url: "/performance", icon: IconChartLine },
+  { title: "Dashboard", url: "/dashboard", icon: IconDashboard, publicVisible: true },
+  { title: "Trends", url: "/trends", icon: IconFileAnalytics, publicVisible: true },
+  { title: "Summary", url: "/summary", icon: IconChartLine, publicVisible: true },
 ];
 
 const dataEntryItems: NavItem[] = [
-  { title: "Data Entry", url: "/data-entry", icon: IconDatabase, roles: ["admin", "data-entry"] },
+  { title: "Data Entry", url: "/data-entry", icon: IconDatabase, publicVisible: true },
   { title: "Electricity", url: "/data-entry/energy", icon: IconBolt, roles: ["admin", "data-entry"] },
   { title: "Water", url: "/data-entry/water", icon: IconDroplet, roles: ["admin", "data-entry"] },
   { title: "Waste", url: "/data-entry/waste", icon: IconRecycle, roles: ["admin", "data-entry"] },
@@ -72,7 +73,7 @@ const adminItems: NavItem[] = [
 ];
 
 const systemItems: NavItem[] = [
-  { title: "Reports", url: "/reports", icon: IconFileDescription },
+  { title: "Reports", url: "/reports", icon: IconFileDescription, publicVisible: true },
   { title: "Notifications", url: "/notifications", icon: IconBell },
   { title: "Settings", url: "/settings", icon: IconSettings },
 ];
@@ -81,15 +82,18 @@ function NavGroup({
   label,
   items,
   userRole,
+  isAuthenticated,
 }: {
   label: string;
   items: NavItem[];
   userRole: UserRole;
+  isAuthenticated: boolean;
 }) {
   const location = useLocation();
-  const filteredItems = items.filter(
-    (item) => !item.roles || item.roles.includes(userRole)
-  );
+  const filteredItems = items.filter((item) => {
+    if (!isAuthenticated) return item.publicVisible === true;
+    return !item.roles || item.roles.includes(userRole);
+  });
 
   if (filteredItems.length === 0) return null;
 
@@ -156,14 +160,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavGroup label="Overview" items={mainNavItems} userRole={userRole} />
+        <NavGroup label="Overview" items={mainNavItems} userRole={userRole} isAuthenticated={isAuthenticated} />
+        <NavGroup label="Data Management" items={dataEntryItems} userRole={userRole} isAuthenticated={isAuthenticated} />
         {isAuthenticated && (
-          <>
-            <NavGroup label="Data Management" items={dataEntryItems} userRole={userRole} />
-            <NavGroup label="Administration" items={adminItems} userRole={userRole} />
-            <NavGroup label="System" items={systemItems} userRole={userRole} />
-          </>
+          <NavGroup label="Administration" items={adminItems} userRole={userRole} isAuthenticated={isAuthenticated} />
         )}
+        <NavGroup label="System" items={systemItems} userRole={userRole} isAuthenticated={isAuthenticated} />
       </SidebarContent>
 
       <SidebarFooter>

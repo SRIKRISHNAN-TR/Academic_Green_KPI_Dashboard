@@ -18,12 +18,6 @@ const mapStatus = (s: string | undefined): KPIStatus => {
   return "danger";
 };
 
-const fallbackAlerts = [
-  { id: "1", type: "warning" as const, title: "Electricity consumption spike", message: "Sapphire Hostel exceeded monthly target by 15%", timestamp: "2 hours ago" },
-  { id: "2", type: "info" as const, title: "Water meter calibration due", message: "Academic Block meters require annual calibration", timestamp: "1 day ago" },
-  { id: "3", type: "success" as const, title: "Waste diversion goal achieved", message: "Q4 recycling rate exceeded 70% target", timestamp: "2 days ago" },
-];
-
 export default function Dashboard() {
   const { user, isAuthenticated } = useAuth();
   const isAdmin = user?.role === "admin";
@@ -43,11 +37,10 @@ export default function Dashboard() {
         water: computeScore(summary.water.ytd.actual, summary.water.ytd.target, "WATER"),
         waste: computeScore(summary.waste.ytd.actual, summary.waste.ytd.target, "WASTE"),
       }
-    : { energy: 85, water: 89, waste: 72 };
+    : { energy: 0, water: 0, waste: 0 };
 
-  const overallScore = Math.round((breakdown.energy + breakdown.water + breakdown.waste) / 3);
+  const overallScore = summary ? Math.round((breakdown.energy + breakdown.water + breakdown.waste) / 3) : 0;
 
-  // Highest usage locations
   const topEnergyLocations = highestUsage?.energy?.slice(0, 3) || [];
   const topWaterLocations = highestUsage?.water?.slice(0, 3) || [];
 
@@ -69,34 +62,34 @@ export default function Dashboard() {
       <div className="grid gap-4 md:grid-cols-3">
         <KPICard
           title="Electricity Consumption"
-          value={summary?.energy.mtd ? summary.energy.mtd.actual.toLocaleString() : "3,542"}
+          value={summary?.energy.mtd ? summary.energy.mtd.actual.toLocaleString() : isLoading ? "..." : "0"}
           unit={summary?.energy.mtd?.unit || "kWh"}
-          target={summary?.energy.mtd ? summary.energy.mtd.target.toLocaleString() : "4,000"}
-          actual={summary?.energy.mtd ? summary.energy.mtd.actual.toLocaleString() : "3,542"}
+          target={summary?.energy.mtd ? summary.energy.mtd.target.toLocaleString() : "0"}
+          actual={summary?.energy.mtd ? summary.energy.mtd.actual.toLocaleString() : "0"}
           status={summary?.energy.mtd ? mapStatus(summary.energy.mtd.status) : "success"}
-          trend={{ direction: "down", value: "12.5%", label: "vs last month" }}
+          trend={{ direction: "down", value: "—", label: "vs last month" }}
           icon={<IconBolt className="size-5" />}
           variant="energy"
         />
         <KPICard
           title="Water Usage"
-          value={summary?.water.mtd ? summary.water.mtd.actual.toLocaleString() : "892"}
+          value={summary?.water.mtd ? summary.water.mtd.actual.toLocaleString() : isLoading ? "..." : "0"}
           unit={summary?.water.mtd?.unit || "m³"}
-          target={summary?.water.mtd ? summary.water.mtd.target.toLocaleString() : "1,000"}
-          actual={summary?.water.mtd ? summary.water.mtd.actual.toLocaleString() : "892"}
+          target={summary?.water.mtd ? summary.water.mtd.target.toLocaleString() : "0"}
+          actual={summary?.water.mtd ? summary.water.mtd.actual.toLocaleString() : "0"}
           status={summary?.water.mtd ? mapStatus(summary.water.mtd.status) : "success"}
-          trend={{ direction: "down", value: "8.2%", label: "vs last month" }}
+          trend={{ direction: "down", value: "—", label: "vs last month" }}
           icon={<IconDroplet className="size-5" />}
           variant="water"
         />
         <KPICard
           title="Waste Diverted"
-          value={summary?.waste.mtd ? summary.waste.mtd.actual.toLocaleString() : "72"}
+          value={summary?.waste.mtd ? summary.waste.mtd.actual.toLocaleString() : isLoading ? "..." : "0"}
           unit={summary?.waste.mtd?.unit || "%"}
-          target={summary?.waste.mtd ? summary.waste.mtd.target.toLocaleString() : "70%"}
-          actual={summary?.waste.mtd ? summary.waste.mtd.actual.toLocaleString() : "72%"}
+          target={summary?.waste.mtd ? summary.waste.mtd.target.toLocaleString() : "0"}
+          actual={summary?.waste.mtd ? summary.waste.mtd.actual.toLocaleString() : "0"}
           status={summary?.waste.mtd ? mapStatus(summary.waste.mtd.status) : "success"}
-          trend={{ direction: "up", value: "5.1%", label: "vs last month" }}
+          trend={{ direction: "up", value: "—", label: "vs last month" }}
           icon={<IconRecycle className="size-5" />}
           variant="waste"
         />
@@ -112,8 +105,8 @@ export default function Dashboard() {
           {[
             {
               label: "Electricity",
-              actual: summary?.energy.mtd?.actual ?? 3542,
-              target: summary?.energy.mtd?.target ?? 4000,
+              actual: summary?.energy.mtd?.actual ?? 0,
+              target: summary?.energy.mtd?.target ?? 0,
               unit: summary?.energy.mtd?.unit || "kWh",
               icon: <IconBolt className="size-4 text-amber-500" />,
               color: "bg-amber-500",
@@ -121,8 +114,8 @@ export default function Dashboard() {
             },
             {
               label: "Water",
-              actual: summary?.water.mtd?.actual ?? 892,
-              target: summary?.water.mtd?.target ?? 1000,
+              actual: summary?.water.mtd?.actual ?? 0,
+              target: summary?.water.mtd?.target ?? 0,
               unit: summary?.water.mtd?.unit || "m³",
               icon: <IconDroplet className="size-4 text-blue-500" />,
               color: "bg-blue-500",
@@ -130,8 +123,8 @@ export default function Dashboard() {
             },
             {
               label: "Waste Diversion",
-              actual: summary?.waste.mtd?.actual ?? 72,
-              target: summary?.waste.mtd?.target ?? 70,
+              actual: summary?.waste.mtd?.actual ?? 0,
+              target: summary?.waste.mtd?.target ?? 0,
               unit: "%",
               icon: <IconRecycle className="size-4 text-green-500" />,
               color: "bg-green-500",
@@ -152,7 +145,7 @@ export default function Dashboard() {
                     <span className="tabular-nums">
                       {item.actual.toLocaleString()} / {item.target.toLocaleString()} {item.unit}
                     </span>
-                    {isOverTarget && (
+                    {isOverTarget && item.target > 0 && (
                       <IconAlertTriangle className="size-4 text-destructive" />
                     )}
                   </div>
@@ -171,7 +164,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>{pct}% of target</span>
-                  {isOverTarget && (
+                  {isOverTarget && item.target > 0 && (
                     <Badge variant="outline" className="border-destructive/50 text-destructive text-xs">
                       Exceeds Target
                     </Badge>
@@ -223,17 +216,7 @@ export default function Dashboard() {
                       );
                     })
                   ) : (
-                    <div className="space-y-2">
-                      {["Sapphire (Boys Hostel)", "Applied Science (AS)", "Ruby (Boys Hostel)"].map((name, i) => (
-                        <div key={name} className="flex items-center justify-between rounded-lg border p-3">
-                          <div className="flex items-center gap-2">
-                            <span className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-bold">{i + 1}</span>
-                            <span className="text-sm font-medium">{name}</span>
-                          </div>
-                          <span className="text-sm font-semibold">{(5200 - i * 800).toLocaleString()} kWh</span>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-sm text-muted-foreground">No data available yet.</p>
                   )}
                 </div>
 
@@ -263,24 +246,14 @@ export default function Dashboard() {
                       );
                     })
                   ) : (
-                    <div className="space-y-2">
-                      {["Ganga (Girls Hostel)", "Emerald (Boys Hostel)", "Research Park"].map((name, i) => (
-                        <div key={name} className="flex items-center justify-between rounded-lg border p-3">
-                          <div className="flex items-center gap-2">
-                            <span className="flex size-6 items-center justify-center rounded-full bg-muted text-xs font-bold">{i + 1}</span>
-                            <span className="text-sm font-medium">{name}</span>
-                          </div>
-                          <span className="text-sm font-semibold">{(1200 - i * 200).toLocaleString()} m³</span>
-                        </div>
-                      ))}
-                    </div>
+                    <p className="text-sm text-muted-foreground">No data available yet.</p>
                   )}
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <AlertsPanel alerts={fallbackAlerts} />
+          <AlertsPanel alerts={[]} />
         </div>
 
         <div className="space-y-6">

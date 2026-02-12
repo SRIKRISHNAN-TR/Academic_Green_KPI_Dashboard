@@ -91,6 +91,49 @@ export const authApi = {
     apiClient.post<AuthResponse>("/auth/login", { email, password }),
   signup: (username: string, email: string, password: string) =>
     apiClient.post<AuthResponse>("/auth/signup", { username, email, password }),
+  forgotPassword: (email: string) =>
+    apiClient.post<{ message: string }>("/auth/forgot-password", { email }),
+};
+
+// Users (admin)
+export interface UserData {
+  _id: string;
+  username: string;
+  email: string;
+  role: "admin" | "data-entry" | "user";
+  createdAt: string;
+}
+
+export const userApi = {
+  getAll: () => apiClient.get<UserData[]>("/users"),
+  updateRole: (id: string, role: string) => apiClient.put<UserData>(`/users/${id}/role`, { role }),
+  delete: (id: string) => apiClient.delete<{ message: string }>(`/users/${id}`),
+};
+
+// Notifications
+export interface NotificationData {
+  _id: string;
+  type: "warning" | "info" | "success";
+  title: string;
+  message: string;
+  kpi?: string;
+  location?: string;
+  actualValue?: number;
+  targetValue?: number;
+  read: boolean;
+  createdAt: string;
+}
+
+export const notificationApi = {
+  getAll: (params?: { read?: string }) => {
+    const query = new URLSearchParams();
+    if (params?.read !== undefined) query.set("read", params.read);
+    const qs = query.toString();
+    return apiClient.get<NotificationData[]>(`/notifications${qs ? `?${qs}` : ""}`);
+  },
+  getUnreadCount: () => apiClient.get<{ count: number }>("/notifications/unread-count"),
+  markAsRead: (id: string) => apiClient.put<NotificationData>(`/notifications/${id}/read`, {}),
+  markAllAsRead: () => apiClient.put<{ message: string }>("/notifications/read-all", {}),
 };
 
 // Metric CRUD factory

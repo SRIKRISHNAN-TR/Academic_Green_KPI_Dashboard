@@ -1,0 +1,95 @@
+1. Now as i said earlier data should be fetch from database (mongo DB) we have already connected to DB and the sceernshot i gave you is existing schema  that has 3 users 
+_id
+69897937ab289539b4c8db2e
+username
+"Admin"
+email
+"adminkpi@gmail.com"
+password
+"$2b$10$ws/uVkjxss2NGTW8NuCU5eadj/SQpf0EWcD.Qarr/RZ4qCjji.LbW"
+role
+"admin"
+createdAt
+2026-02-09T06:05:43.618+00:00
+__v
+0
+_id
+698c17f3076b2c1f010d2344
+username
+"Viewer"
+email
+"viwerkpi@gmail.com"
+password
+"$2b$10$T5pTwzNG/StF7BRO4Gwo3e/BVpWNOvkpfqTuyl3.7gMtd3d4gXXNa"
+role
+"user"
+createdAt
+2026-02-11T05:47:31.987+00:00
+__v
+0
+_id
+698c1969076b2c1f010d23a7
+username
+"sri"
+email
+"srikrishnan310@gmail.com"
+password
+"$2b$10$hOqePEHQcoQhipGyz.QVLOWzQ36LHNGk2AJspsvF9726uUtVL2crG"
+role
+"user"
+createdAt
+2026-02-11T05:53:45.851+00:00
+__v
+0
+now dont change the users but what i want is to update the database to the new version of our project here gimme monogo sh  code for this and set srikrishnan310 as admin as well.
+
+2.now when i nav tp trends page it turns into a blank white for some it doesnt load
+
+3. and in sending mail im getting this error Forgot password error: Error: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials 41be03b00d2f7-c6e19811a9esm838533a12.30 - gsmtp
+
+    at SMTPConnection._formatError (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:912:19)
+
+    at SMTPConnection._actionAUTHComplete (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:1722:34)    
+
+    at SMTPConnection.<anonymous> (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:651:26)
+
+    at SMTPConnection._processResponse (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:1098:20)       
+
+    at SMTPConnection._onData (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:872:14)
+
+    at SMTPConnection._onSocketData (D:\Academic Green KPI Dashboard\backend\node_modules\nodemailer\lib\smtp-connection\index.js:196:44)
+
+    at TLSSocket.emit (node:events:518:28)
+
+    at addChunk (node:internal/streams/readable:561:12)
+
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+
+    at Readable.push (node:internal/streams/readable:392:5) {
+
+  code: 'EAUTH',
+
+  response: '535-5.7.8 Username and Password not accepted. For more information, go to\n' +
+
+    '535 5.7.8  https://support.google.com/mail/?p=BadCredentials 41be03b00d2f7-c6e19811a9esm838533a12.30 - gsmtp',
+
+  responseCode: 535,
+
+  command: 'AUTH PLAIN'
+
+}  
+
+4.and even when im just a viewer without logging in the nav bar and dashbord works fine but i f i try to nav to trneds or summary page it takes me to login page
+
+5. and for adminstration when  logges in as admin under user management fetch data from user table and display it and when targets are changed it should reflect in bakend Under notifications allow unread, read notification and if limit exceed send notification 
+under settings remove apperance and security 
+
+6. if i try to download the reports.pdf or docux 
+Error generating report:
+cannot read properties of undefined (reading to 'toLocalString')
+
+im getting this error
+
+7. and data entry value should reflect the database

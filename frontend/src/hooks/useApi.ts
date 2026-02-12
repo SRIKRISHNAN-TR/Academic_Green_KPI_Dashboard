@@ -5,6 +5,8 @@ import {
   wasteApi,
   targetApi,
   dashboardApi,
+  userApi,
+  notificationApi,
   type MetricInput,
   type TargetInput,
 } from "@/services/api";
@@ -40,7 +42,13 @@ function createMetricHooks(
       const qc = useQueryClient();
       return useMutation({
         mutationFn: (data: MetricInput) => api.create(data),
-        onSuccess: () => qc.invalidateQueries({ queryKey: [key] }),
+        onSuccess: () => {
+          qc.invalidateQueries({ queryKey: [key] });
+          qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
+          qc.invalidateQueries({ queryKey: ["highest-usage"] });
+          qc.invalidateQueries({ queryKey: ["notifications"] });
+          qc.invalidateQueries({ queryKey: ["unread-count"] });
+        },
       });
     },
     useUpdate: () => {
@@ -77,7 +85,10 @@ export function useCreateTarget() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (data: TargetInput) => targetApi.create(data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["targets"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["targets"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
+    },
   });
 }
 
@@ -86,7 +97,10 @@ export function useUpdateTarget() {
   return useMutation({
     mutationFn: ({ id, data }: { id: string; data: Partial<TargetInput> }) =>
       targetApi.update(id, data),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["targets"] }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["targets"] });
+      qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
+    },
   });
 }
 
@@ -112,5 +126,66 @@ export function useGenerateSnapshot() {
     mutationFn: ({ month, year }: { month: string; year: number }) =>
       dashboardApi.generateSnapshot(month, year),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["snapshots"] }),
+  });
+}
+
+// Users (admin)
+export function useUsers() {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: () => userApi.getAll(),
+  });
+}
+
+export function useUpdateUserRole() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, role }: { id: string; role: string }) => userApi.updateRole(id, role),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+}
+
+export function useDeleteUser() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => userApi.delete(id),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+}
+
+// Notifications
+export function useNotifications(params?: { read?: string }) {
+  return useQuery({
+    queryKey: ["notifications", params],
+    queryFn: () => notificationApi.getAll(params),
+  });
+}
+
+export function useUnreadCount() {
+  return useQuery({
+    queryKey: ["unread-count"],
+    queryFn: () => notificationApi.getUnreadCount(),
+  });
+}
+
+export function useMarkAsRead() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => notificationApi.markAsRead(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["notifications"] });
+      qc.invalidateQueries({ queryKey: ["unread-count"] });
+    },
+  });
+}
+
+export function useMarkAllAsRead() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => notificationApi.markAllAsRead(),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["notifications"] });
+      qc.invalidateQueries({ queryKey: ["unread-count"] });
+    },
   });
 }

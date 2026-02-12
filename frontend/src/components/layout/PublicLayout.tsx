@@ -15,6 +15,9 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
   const navLinks = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Trends", href: "/trends" },
+    { label: "Summary", href: "/summary" },
+    { label: "Reports", href: "/reports" },
+    { label: "Data Entry", href: "/data-entry" },
   ];
 
   return (
@@ -28,7 +31,7 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
               </div>
               <span className="font-semibold">Academic Green KPI</span>
             </Link>
-            <nav className="flex items-center gap-1">
+            <nav className="hidden items-center gap-1 md:flex">
               {navLinks.map((link) => (
                 <Link key={link.href} to={link.href}>
                   <Button

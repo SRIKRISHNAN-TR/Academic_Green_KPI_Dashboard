@@ -1,4 +1,5 @@
 const Waste = require("../models/Waste");
+const { checkAndCreateAlert } = require("./notification.controller");
 
 exports.getAll = async (req, res) => {
   try {
@@ -20,8 +21,11 @@ exports.getById = async (req, res) => {
 };
 
 exports.create = async (req, res) => {
-  try { res.status(201).json(await Waste.create({ ...req.body, metric: "WASTE" })); }
-  catch (err) { res.status(400).json({ message: err.message }); }
+  try {
+    const doc = await Waste.create({ ...req.body, metric: "WASTE" });
+    await checkAndCreateAlert("WASTE", doc);
+    res.status(201).json(doc);
+  } catch (err) { res.status(400).json({ message: err.message }); }
 };
 
 exports.update = async (req, res) => {

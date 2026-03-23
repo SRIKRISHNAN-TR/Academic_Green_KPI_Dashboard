@@ -17,7 +17,6 @@ export function PublicLayout({ children, title }: PublicLayoutProps) {
     { label: "Trends", href: "/trends" },
     { label: "Summary", href: "/summary" },
     { label: "Reports", href: "/reports" },
-    { label: "Data Entry", href: "/data-entry" },
   ];
 
   return (

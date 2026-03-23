@@ -60,7 +60,7 @@ const mainNavItems: NavItem[] = [
 ];
 
 const dataEntryItems: NavItem[] = [
-  { title: "Data Entry", url: "/data-entry", icon: IconDatabase, publicVisible: true },
+  { title: "Data Entry", url: "/data-entry", icon: IconDatabase, roles: ["admin", "data-entry"] },
   { title: "Electricity", url: "/data-entry/energy", icon: IconBolt, roles: ["admin", "data-entry"] },
   { title: "Water", url: "/data-entry/water", icon: IconDroplet, roles: ["admin", "data-entry"] },
   { title: "Waste", url: "/data-entry/waste", icon: IconRecycle, roles: ["admin", "data-entry"] },

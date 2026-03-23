@@ -21,7 +21,7 @@ const metricLabels: Record<string, string> = {
 };
 
 const locationOptions = [
-  { label: "All (Global)", value: "" },
+  { label: "All (Global)", value: "global" },
   ...Object.entries(LOCATION_CATEGORIES).flatMap(([cat, locs]) =>
     locs.map((l) => ({ label: `${cat} - ${l}`, value: `${cat} - ${l}` }))
   ),
@@ -38,13 +38,13 @@ export default function TargetManagement() {
   const { toast } = useToast();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>("");
-  const [selectedYear, setSelectedYear] = useState("2025");
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
 
   // New target form
   const [newMetric, setNewMetric] = useState<string>("ENERGY");
   const [newValue, setNewValue] = useState("");
   const [newUnit, setNewUnit] = useState("kWh");
-  const [newLocation, setNewLocation] = useState("");
+  const [newLocation, setNewLocation] = useState("global");
   const [showAddForm, setShowAddForm] = useState(false);
 
   const { data: apiTargets } = useTargets({ year: Number(selectedYear) });
@@ -72,7 +72,7 @@ export default function TargetManagement() {
       year: Number(selectedYear),
       targetValue: Number(newValue),
       unit: newUnit,
-      location: newLocation || undefined,
+      location: newLocation === "global" ? undefined : newLocation,
     };
     try {
       await createTarget.mutateAsync(data);
@@ -85,15 +85,18 @@ export default function TargetManagement() {
   };
 
   const targets = apiTargets && apiTargets.length > 0
-    ? apiTargets.map((t) => ({
-        id: t._id,
-        kpi: metricLabels[t.metric] || t.metric,
-        monthly: `${(t.targetValue / 12).toLocaleString()} ${t.unit}`,
-        annual: `${t.targetValue.toLocaleString()} ${t.unit}`,
-        reduction: "N/A",
-        location: t.location || "Global",
-        rawValue: t.targetValue,
-      }))
+    ? apiTargets.map((t) => {
+        const val = t.targetValue || 0;
+        return {
+          id: t._id,
+          kpi: metricLabels[t.metric] || t.metric || "Unknown",
+          monthly: `${(val / 12).toLocaleString()} ${t.unit || ""}`,
+          annual: `${val.toLocaleString()} ${t.unit || ""}`,
+          reduction: "N/A",
+          location: t.location || "Global",
+          rawValue: val,
+        };
+      })
     : fallbackTargets.map((t) => ({ ...t, rawValue: 0 }));
 
   return (

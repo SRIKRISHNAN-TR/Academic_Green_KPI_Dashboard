@@ -22,8 +22,8 @@ export default function ForgotPassword() {
       await apiClient.post("/auth/forgot-password", { email });
       setIsSubmitted(true);
       toast({
-        title: "Email sent!",
-        description: "Check your inbox for your temporary password.",
+        title: "Reset link sent!",
+        description: "Check your inbox for the password reset link.",
       });
     } catch (err: any) {
       toast({
@@ -51,7 +51,7 @@ export default function ForgotPassword() {
           <CardHeader className="space-y-1">
             <CardTitle className="text-xl">Reset password</CardTitle>
             <CardDescription>
-              Enter your email address and we'll send you a temporary password
+              Enter your email address and we'll send you a secure password reset link
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -63,7 +63,7 @@ export default function ForgotPassword() {
                 <div className="space-y-2">
                   <h3 className="font-medium">Check your email</h3>
                   <p className="text-sm text-muted-foreground">
-                    We've sent a temporary password to <strong>{email}</strong>. Use it to log in and change your password.
+                    We've sent a password reset link to <strong>{email}</strong>. Check your inbox and click the link to set a new password. The link expires in <strong>1 hour</strong>.
                   </p>
                 </div>
                 <Button asChild variant="outline" className="w-full">
@@ -92,7 +92,7 @@ export default function ForgotPassword() {
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Sending..." : "Send temporary password"}
+                  {isLoading ? "Sending link..." : "Send reset link"}
                 </Button>
 
                 <Button asChild variant="ghost" className="w-full">

@@ -135,21 +135,29 @@ export default function Dashboard() {
             const isOverTarget = item.lowerIsBetter ? item.actual > item.target : item.actual < item.target;
 
             return (
-              <div key={item.label} className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <div className="flex items-center gap-2">
+              <div key={item.label} className="space-y-1.5">
+                {/* Row 1: label left, pct badge + alert right */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     {item.icon}
-                    <span className="font-medium">{item.label}</span>
+                    <span className="font-medium text-sm truncate">{item.label}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className="tabular-nums">
-                      {item.actual.toLocaleString()} / {item.target.toLocaleString()} {item.unit}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className={cn(
+                      "text-xs font-semibold tabular-nums px-1.5 py-0.5 rounded-md",
+                      isOverTarget && item.target > 0
+                        ? "bg-destructive/10 text-destructive"
+                        : "bg-muted text-muted-foreground"
+                    )}>
+                      {pct}%
                     </span>
                     {isOverTarget && item.target > 0 && (
-                      <IconAlertTriangle className="size-4 text-destructive" />
+                      <IconAlertTriangle className="size-3.5 text-destructive shrink-0" />
                     )}
                   </div>
                 </div>
+
+                {/* Row 2: progress bar */}
                 <div className="relative">
                   <Progress
                     value={Math.min(pct, 100)}
@@ -162,13 +170,19 @@ export default function Dashboard() {
                     />
                   )}
                 </div>
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>{pct}% of target</span>
-                  {isOverTarget && item.target > 0 && (
-                    <Badge variant="outline" className="border-destructive/50 text-destructive text-xs">
-                      Exceeds Target
-                    </Badge>
-                  )}
+
+                {/* Row 3: actual / target numbers — compact and never overflow */}
+                <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <span>
+                    Actual: <span className={cn("font-mono font-semibold", isOverTarget && item.target > 0 ? "text-destructive" : "text-foreground")}>
+                      {item.actual.toLocaleString()} {item.unit}
+                    </span>
+                  </span>
+                  <span>
+                    Target: <span className="font-mono font-semibold text-foreground">
+                      {item.target.toLocaleString()} {item.unit}
+                    </span>
+                  </span>
                 </div>
               </div>
             );

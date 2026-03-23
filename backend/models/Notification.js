@@ -9,6 +9,8 @@ const notificationSchema = new mongoose.Schema({
   actualValue: { type: Number },
   targetValue: { type: Number },
   read: { type: Boolean, default: false },
+  resolved: { type: Boolean, default: false },
+  resolvedAt: { type: Date, default: null },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   createdAt: { type: Date, default: Date.now },
 });

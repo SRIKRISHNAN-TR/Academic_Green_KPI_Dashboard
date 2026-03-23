@@ -13,4 +13,6 @@ const energySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+energySchema.index({ year: 1, month: 1, location: 1 });
+
 module.exports = mongoose.model("Energy", energySchema, "energy_data");

@@ -17,10 +17,10 @@ const mapStatus = (s: string | undefined): KPIStatus => {
 };
 
 const complianceItems = [
-  { name: "ISO 14001 Environmental Management", status: "compliant", dueDate: "Mar 2024" },
-  { name: "Energy Efficiency Certification", status: "compliant", dueDate: "Jun 2024" },
-  { name: "Water Conservation Standards", status: "review", dueDate: "Jan 2024" },
-  { name: "Waste Management Protocol", status: "compliant", dueDate: "Sep 2024" },
+  { name: "ISO 14001 Environmental Management", status: "compliant", dueDate: "Mar 2026" },
+  { name: "Energy Efficiency Certification", status: "compliant", dueDate: "Jun 2026" },
+  { name: "Water Conservation Standards", status: "review", dueDate: "Jan 2026" },
+  { name: "Waste Management Protocol", status: "compliant", dueDate: "Sep 2026" },
 ];
 
 export default function Summary() {

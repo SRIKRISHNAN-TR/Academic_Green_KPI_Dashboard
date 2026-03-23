@@ -13,4 +13,6 @@ const waterSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+waterSchema.index({ year: 1, month: 1, location: 1 });
+
 module.exports = mongoose.model("Water", waterSchema, "water_data");

@@ -13,4 +13,6 @@ const wasteSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
+wasteSchema.index({ year: 1, month: 1, location: 1 });
+
 module.exports = mongoose.model("Waste", wasteSchema, "waste_data");

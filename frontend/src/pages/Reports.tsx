@@ -31,7 +31,7 @@ export default function Reports() {
   const [location, setLocation] = useState("All Locations");
   const [fromMonth, setFromMonth] = useState("January");
   const [toMonth, setToMonth] = useState("December");
-  const [year, setYear] = useState("2025");
+  const [year, setYear] = useState(new Date().getFullYear().toString());
   const [isGenerating, setIsGenerating] = useState(false);
 
   const params: { year: number; location?: string } = { year: Number(year) };

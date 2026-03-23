@@ -93,6 +93,8 @@ export const authApi = {
     apiClient.post<AuthResponse>("/auth/signup", { username, email, password }),
   forgotPassword: (email: string) =>
     apiClient.post<{ message: string }>("/auth/forgot-password", { email }),
+  resetPassword: (token: string, email: string, password: string) =>
+    apiClient.post<{ message: string }>("/auth/reset-password", { token, email, password }),
 };
 
 // Users (admin)
@@ -121,19 +123,25 @@ export interface NotificationData {
   actualValue?: number;
   targetValue?: number;
   read: boolean;
+  resolved: boolean;
+  resolvedAt?: string;
   createdAt: string;
 }
 
 export const notificationApi = {
-  getAll: (params?: { read?: string }) => {
+  getAll: (params?: { read?: string; resolved?: string; kpi?: string }) => {
     const query = new URLSearchParams();
     if (params?.read !== undefined) query.set("read", params.read);
+    if (params?.resolved !== undefined) query.set("resolved", params.resolved);
+    if (params?.kpi) query.set("kpi", params.kpi);
     const qs = query.toString();
     return apiClient.get<NotificationData[]>(`/notifications${qs ? `?${qs}` : ""}`);
   },
   getUnreadCount: () => apiClient.get<{ count: number }>("/notifications/unread-count"),
   markAsRead: (id: string) => apiClient.put<NotificationData>(`/notifications/${id}/read`, {}),
   markAllAsRead: () => apiClient.put<{ message: string }>("/notifications/read-all", {}),
+  toggleResolved: (id: string) => apiClient.put<NotificationData>(`/notifications/${id}/resolve`, {}),
+  deleteNotification: (id: string) => apiClient.delete<{ message: string }>(`/notifications/${id}`),
 };
 
 // Metric CRUD factory

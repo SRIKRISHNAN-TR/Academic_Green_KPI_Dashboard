@@ -1,0 +1,22 @@
+# Dependency directory
+node_modules/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Environment Variables
+.env
+.env.test
+.env.production
+.env.local
+
+# Coverage directory
+coverage/
+
+# OS and Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

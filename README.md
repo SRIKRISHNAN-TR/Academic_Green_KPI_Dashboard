@@ -1,18 +1,77 @@
-# React + Vite
+# Academic Green KPI Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Academic Green KPI Dashboard is a comprehensive web application designed to track, manage, and analyze environmental Key Performance Indicators (KPIs) for academic institutions.
 
-Currently, two official plugins are available:
+It features a full-stack architecture comprising a React front-end and a Node.js/Express back-end.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Tech Stack
 
-## React Compiler
+### Frontend
+- **Framework**: React 18, utilizing Vite for fast builds and hot-module replacement (HMR).
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS for utility-first styling.
+- **UI Components**: Shadcn UI & Radix UI primitives for accessible, high-quality component design.
+- **Routing**: React Router DOM
+- **Data Fetching & State**: TanStack React Query
+- **Charts**: Recharts for visualizing KPI data.
+- **Forms**: React Hook Form with Zod validation.
+- **Other utilities**: lucide-react for icons, date-fns for time formatting, jspdf and docx for exports.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+### Backend
+- **Framework**: Express on Node.js
+- **Database**: MongoDB with Mongoose ORM
+- **Authentication**: JWT (JSON Web Tokens) & Bcrypt for password hashing
+- **Security**: cors, express-rate-limit
+- **Mail**: Nodemailer for sending automated emails.
 
-Note: This will impact Vite dev & build performances.
+## Project Structure
 
-## Expanding the ESLint configuration
+This repository is organized into two main directories:
+- `/frontend`: Contains the Vite + React client application.
+- `/backend`: Contains the Express.js server and database connection logic.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Getting Started
+
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed along with a package manager like npm or yarn. You will also need a MongoDB instance running locally or via MongoDB Atlas.
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository_url>
+   cd "Academic Green KPI Dashboard"
+   ```
+
+2. Setup the backend:
+   ```bash
+   cd backend
+   npm install
+   ```
+   *Create a `.env` file in the `backend` directory based on required environment variables (e.g., `PORT`, `MONGO_URI`, `JWT_SECRET`, etc.).*
+
+3. Setup the frontend:
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+   *Create a `.env` file in the `frontend` directory if there are any specific local Vite environment variables required.*
+
+### Running the Application
+
+1. **Start the backend server:**
+   ```bash
+   cd backend
+   npm run dev
+   ```
+   This will start the Node server using nodemon for automatic restarts.
+
+2. **Start the frontend development server:**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+   This will start Vite on the configured localhost port.
+
+## License
+MIT

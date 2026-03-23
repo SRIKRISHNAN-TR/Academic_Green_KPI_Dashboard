@@ -63,7 +63,11 @@ function createMetricHooks(
       const qc = useQueryClient();
       return useMutation({
         mutationFn: (id: string) => api.delete(id),
-        onSuccess: () => qc.invalidateQueries({ queryKey: [key] }),
+        onSuccess: () => {
+          qc.invalidateQueries({ queryKey: [key] });
+          qc.invalidateQueries({ queryKey: ["dashboard-summary"] });
+          qc.invalidateQueries({ queryKey: ["highest-usage"] });
+        },
       });
     },
   };
@@ -189,3 +193,24 @@ export function useMarkAllAsRead() {
     },
   });
 }
+
+export function useToggleResolved() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => notificationApi.toggleResolved(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["notifications"] });
+    },
+  });
+}
+
+export function useDeleteNotification() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => notificationApi.deleteNotification(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["notifications"] });
+      qc.invalidateQueries({ queryKey: ["unread-count"] });
+    },
+  });
+}

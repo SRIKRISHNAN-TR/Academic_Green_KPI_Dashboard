@@ -53,7 +53,7 @@ const toChart = (data: { month: string; actual: number; target: number }[]) =>
 
 export default function Trends() {
   const { isAuthenticated } = useAuth();
-  const [year, setYear] = useState("2025");
+  const [year, setYear] = useState(new Date().getFullYear().toString());
   const [location, setLocation] = useState("All Locations");
 
   const params: { year: number; location?: string } = { year: Number(year) };

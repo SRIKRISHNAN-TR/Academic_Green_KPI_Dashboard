@@ -180,3 +180,5 @@ export default function Summary() {
 
   return <DashboardLayout title="Summary Dashboard" requireAuth={false}>{pageContent}</DashboardLayout>;
 }
+
+

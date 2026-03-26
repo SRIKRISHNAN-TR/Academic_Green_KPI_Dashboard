@@ -55,6 +55,11 @@ app.use("/api/dashboard", require("./routes/dashboard.routes"));
 app.use("/api/users", require("./routes/user.routes"));
 app.use("/api/notifications", require("./routes/notification.routes"));
 
+// Basic root route
+app.get("/", (req, res) => {
+  res.json({ message: "Academic Green KPI Dashboard API is running correctly!" });
+});
+
 // ─── 404 handler ─────────────────────────────────────────────────────────────
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });

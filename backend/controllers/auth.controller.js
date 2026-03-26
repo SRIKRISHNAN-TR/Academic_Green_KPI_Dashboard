@@ -86,7 +86,19 @@ exports.forgotPassword = async (req, res, next) => {
     user.resetTokenExpiry = expiry;
     await user.save();
 
-    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:8080";
+    // Determine which frontend URL to use for the reset link
+    let frontendUrl = "http://localhost:8080";
+    const allowedUrls = (process.env.FRONTEND_URL || "http://localhost:8080").split(",");
+    const origin = req.get("origin");
+
+    // If the request came from an allowed origin, use that origin for the link
+    if (origin && allowedUrls.includes(origin)) {
+      frontendUrl = origin;
+    } else {
+      // Otherwise, use the first allowed URL
+      frontendUrl = allowedUrls[0];
+    }
+
     const resetLink = `${frontendUrl}/reset-password?token=${rawToken}&email=${encodeURIComponent(email)}`;
 
     const transporter = createMailTransporter();

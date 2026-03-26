@@ -108,6 +108,8 @@ export interface UserData {
 
 export const userApi = {
   getAll: () => apiClient.get<UserData[]>("/users"),
+  create: (data: { username: string; email: string; password?: string; role?: string }) => 
+    apiClient.post<UserData>("/users", data),
   updateRole: (id: string, role: string) => apiClient.put<UserData>(`/users/${id}/role`, { role }),
   delete: (id: string) => apiClient.delete<{ message: string }>(`/users/${id}`),
 };

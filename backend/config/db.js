@@ -6,7 +6,10 @@ const connectDB = async () => {
     console.log("MongoDB connected");
   } catch (err) {
     console.error("MongoDB connection error:", err.message);
-    process.exit(1);
+    // Don't kill the Vercel serverless function container
+    if (process.env.NODE_ENV !== "production") {
+      process.exit(1);
+    }
   }
 };
 

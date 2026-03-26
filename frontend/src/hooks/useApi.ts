@@ -141,6 +141,14 @@ export function useUsers() {
   });
 }
 
+export function useCreateUser() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (data: { username: string; email: string; password?: string; role?: string }) => userApi.create(data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["users"] }),
+  });
+}
+
 export function useUpdateUserRole() {
   const qc = useQueryClient();
   return useMutation({

@@ -131,7 +131,8 @@ async function seed() {
   const eRows = [], wRows = [], waRows = [], tRows = [];
 
   for (const year of years) {
-    const months = year === 2026 ? MONTHS.slice(0, 3) : MONTHS;
+    const currentMonth = new Date().getMonth(); // 0-based, auto-detects current month
+    const months = year === 2026 ? MONTHS.slice(0, currentMonth + 1) : MONTHS;
 
     for (const location of ALL_LOCATIONS) {
       const base    = getBaseTargets(location);

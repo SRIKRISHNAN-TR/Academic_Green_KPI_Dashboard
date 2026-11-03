@@ -1,0 +1,69 @@
+
+=== energy_data (270 docs) ===
+Keys: _id, metric, month, year, actual, target, unit, source, location, status, createdAt, __v
+Sample Data:
+{
+  "_id": "69afa3307dff06d405712655",
+  "metric": "ENERGY",
+  "month": "January",
+  "year": 2025,
+  "actual": 9122,
+  "target": 9350,
+  "unit": "kWh",
+  "source": "Seed",
+  "location": "Boys Hostel - Sapphire",
+  "status": "GREEN",
+  "createdAt": "2026-03-10T04:50:56.986Z",
+  "__v": 0
+}
+
+=== carbon_data (3 docs) ===
+Keys: _id, month, year, electricityEmissions, transportEmissions, wasteEmissions, totalCarbon, unit, createdAt
+Sample Data:
+{
+  "_id": "6986b4afb6635013acc440e7",
+  "month": "January",
+  "year": 2025,
+  "electricityEmissions": 12,
+  "transportEmissions": 5,
+  "wasteEmissions": 3,
+  "totalCarbon": 20,
+  "unit": "Tons CO2",
+  "createdAt": "2026-02-07T03:42:39.085Z"
+}
+
+=== water_data (271 docs) ===
+Keys: _id, metric, month, year, actual, target, unit, source, location, status, createdAt, __v
+Sample Data:
+{
+  "_id": "69afa3317dff06d405712764",
+  "metric": "WATER",
+  "month": "January",
+  "year": 2025,
+  "actual": 459,
+  "target": 462,
+  "unit": "m³",
+  "source": "Seed",
+  "location": "Boys Hostel - Sapphire",
+  "status": "GREEN",
+  "createdAt": "2026-03-10T04:50:57.122Z",
+  "__v": 0
+}
+
+=== waste_data (270 docs) ===
+Keys: _id, metric, month, year, actual, target, unit, source, location, status, createdAt, __v
+Sample Data:
+{
+  "_id": "69afa3317dff06d405712873",
+  "metric": "WASTE",
+  "month": "January",
+  "year": 2025,
+  "actual": 73,
+  "target": 68,
+  "unit": "%",
+  "source": "Seed",
+  "location": "Boys Hostel - Sapphire",
+  "status": "GREEN",
+  "createdAt": "2026-03-10T04:50:57.217Z",
+  "__v": 0
+}

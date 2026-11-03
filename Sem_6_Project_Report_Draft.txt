@@ -1,0 +1,1170 @@
+================================================================================
+                  VEL TECH RANGARAJAN DR. SAGUNTHALA R&D INSTITUTE OF
+                     SCIENCE AND TECHNOLOGY (AUTONOMOUS)
+================================================================================
+
+               DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING
+
+                              PROJECT REPORT
+
+                                   ON
+
+              "ACADEMIC GREEN KPI DASHBOARD"
+
+        Submitted in partial fulfillment of the requirements for the award of
+
+                  BACHELOR OF ENGINEERING
+                   (Computer Science and Engineering)
+
+                        Submitted by:
+
+                   SRIKRISHNAN T R (7376232CB152)
+
+                         Under the guidance of
+
+                      [Faculty Guide Name]
+                      [Faculty Designation]
+            Department of Computer Science and Engineering
+
+                       [AY: 2025 - 2026]
+                         (VI SEMESTER)
+
+================================================================================
+
+
+
+
+================================================================================
+                             CERTIFICATE
+================================================================================
+
+This is to certify that the project report entitled
+
+               "ACADEMIC GREEN KPI DASHBOARD"
+
+is a bonafide record of the work done by
+
+               SRIKRISHNAN T R (7376232CB152)
+
+of B.E. Computer Science and Engineering, VI Semester, in partial fulfillment
+of the requirements for the award of the degree of Bachelor of Engineering
+by Anna University, Chennai, during the academic year 2025-2026.
+
+The project was carried out under my guidance and supervision and no part of
+this report has been submitted to any other university or institution for any
+other examination or purpose.
+
+
+Project Guide:                               Head of the Department:
+[Faculty Name]                               [HOD Name]
+[Designation]                                Professor & HOD
+Dept. of CSE                                 Dept. of CSE
+Vel Tech R&D Institute                       Vel Tech R&D Institute
+
+
+
+Submitted for the University Practical Examination held on ________________
+
+Internal Examiner:                           External Examiner:
+[Name & Sign]                                [Name & Sign]
+
+================================================================================
+
+
+
+
+================================================================================
+                           ACKNOWLEDGEMENT
+================================================================================
+
+I would like to express my sincere gratitude to the Management of Vel Tech
+Rangarajan Dr. Sagunthala R&D Institute of Science and Technology for
+providing me with the resources and environment necessary to complete this
+project.
+
+I extend my heartfelt thanks to my project guide [Faculty Guide Name],
+[Designation], Department of Computer Science and Engineering, for their
+constant motivation, valuable suggestions, and technical guidance throughout
+the development of this project.
+
+I am grateful to the Head of Department, Professor [HOD Name], for their
+encouragement and support.
+
+I would also like to thank all faculty members of the Department of Computer
+Science and Engineering for their support and constructive feedback.
+
+Finally, I thank my parents and friends for their unwavering support and
+encouragement throughout this project.
+
+
+                                                        SRIKRISHNAN T R
+                                                       (7376232CB152)
+
+================================================================================
+
+
+
+
+================================================================================
+                              ABSTRACT
+================================================================================
+
+The Academic Green KPI Dashboard is a full-stack web application designed to
+address the growing need for data-driven environmental sustainability management
+in academic institutions. Academic campuses consist of numerous facilities such
+as academic blocks, laboratories, libraries, hostels, and administrative offices,
+each consuming significant amounts of energy, water, and generating waste.
+Without a centralized system, monitoring and managing resource consumption
+across all these locations is a complex and inefficient task.
+This project presents a comprehensive solution that enables institutions to
+track, analyze, and report on four key environmental metrics: Electricity
+Consumption (kWh), Water Usage (m³), Waste Diversion Rate (%), and Carbon
+Footprint (tCO2e). The system is built on a modern MERN stack comprising
+MongoDB, Express.js, React 18, and Node.js, following a clean RESTful API
+architecture.
+The application features an intelligent RAG (Red-Amber-Green) status system
+that automatically evaluates Month-to-Date (MTD) and Year-to-Date (YTD)
+performance against predefined sustainability targets. It provides role-based
+access control (Admin, Data Entry, Public User) to ensure data integrity and
+security. Advanced analytics features include highest-usage location ranking,
+an overall Sustainability Score, and trend visualization through interactive
+charts. The system also supports KPI Snapshot generation for historical tracking
+and report export in PDF and DOCX formats. Notifications and email alerts are
+triggered automatically when thresholds are breached.
+The project is deployed using a cloud-based architecture with the frontend
+hosted on Vercel and the backend connected to MongoDB Atlas for high availability.
+This solution serves as a centralized, intelligent platform to help academic
+institutions reduce their carbon footprint, meet sustainability goals, and
+support initiatives like NAAC greening criteria and NIRF India Rankings.
+Keywords: KPI Dashboard, Sustainability, MERN Stack, React, MongoDB, REST API,
+          Environmental Monitoring, Role-Based Access Control.
+
+================================================================================
+
+
+
+
+================================================================================
+                         TABLE OF CONTENTS
+================================================================================
+
+Chapter 1:  Introduction
+  1.1  Overview
+  1.2  Problem Statement
+  1.3  Objectives
+  1.4  Scope of the Project
+  1.5  Organization of the Report
+
+Chapter 2:  Literature Survey
+  2.1  Existing Systems & Limitations
+  2.2  Relevant Technologies & Frameworks
+  2.3  Comparison of Approaches
+
+Chapter 3:  System Analysis
+  3.1  Feasibility Study
+  3.2  Functional Requirements
+  3.3  Non-Functional Requirements
+  3.4  User Roles
+
+Chapter 4:  System Design
+  4.1  System Architecture
+  4.2  Database Schema Design
+  4.3  API Design (RESTful Endpoints)
+  4.4  Module Design
+  4.5  Use Case Diagram
+  4.6  Data Flow Diagram
+  4.7  ER Diagram
+
+Chapter 5:  Implementation
+  5.1  Technology Stack
+  5.2  Backend Implementation
+  5.3  Frontend Implementation
+  5.4  Authentication & Security
+  5.5  Deployment
+
+Chapter 6:  Testing
+  6.1  Testing Strategy
+  6.2  Unit Testing
+  6.3  Integration Testing
+  6.4  User Acceptance Testing
+
+Chapter 7:  Results and Discussion
+  7.1  Dashboard Overview
+  7.2  KPI Metric Tracking
+  7.3  Analytics & Reports
+
+Chapter 8:  Conclusion and Future Work
+  8.1  Conclusion
+  8.2  Future Enhancements
+
+References
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 1: INTRODUCTION
+================================================================================
+
+1.1 OVERVIEW
+------------
+The escalating global concern over environmental sustainability has led many
+educational institutions to adopt green initiatives as part of their core
+administrative functions. Academic campuses, by virtue of their size and
+operational scale, consume enormous quantities of electricity, water, and
+generate substantial amounts of waste on a daily basis.
+
+The "Academic Green KPI Dashboard" is a web-based platform specifically
+engineered for academic institutions to monitor, track, and manage their
+environmental Key Performance Indicators (KPIs) in real time. It replaces
+traditional, manual, and error-prone spreadsheet-based tracking methods with
+a centralized digital system that is accessible to administrators, data entry
+personnel, and the general public (for transparency).
+
+The system consolidates data from multiple campus locations and presents
+performance metrics in a visual, intuitive format, enabling decision-makers to
+identify underperforming areas and take corrective action swiftly.
+
+
+1.2 PROBLEM STATEMENT
+---------------------
+Academic institutions face several challenges in managing their environmental
+footprint:
+
+(i)   Lack of Centralization: Environmental data (energy bills, water meter
+      readings, waste logs) is maintained in isolated spreadsheets across
+      departments, making institution-wide analysis difficult.
+
+(ii)  No Real-Time Visibility: Data is often reviewed monthly or quarterly,
+      meaning problems are identified too late for timely intervention.
+
+(iii) Absence of Target Tracking: Without structured targets, there is no
+      mechanism to measure whether the institution is improving or regressing.
+
+(iv)  Poor Reporting: Generating formatted reports for accreditation bodies
+      (NAAC, NIRF) requires significant manual effort.
+
+(v)   Limited Accountability: Without role-based access, data accuracy and
+      responsibility are hard to enforce.
+
+This project addresses all of the above challenges through a purpose-built
+web application.
+
+
+1.3 OBJECTIVES
+--------------
+The primary objectives of this project are:
+
+1. To develop a centralized web-based platform for tracking environmental KPIs
+   across an academic campus.
+
+2. To implement an automated Green/Yellow/Red (RAG) status system that
+   evaluates actual performance against sustainability targets.
+
+3. To provide Month-to-Date (MTD) and Year-to-Date (YTD) performance summaries
+   for Energy, Water, Waste, and Carbon metrics.
+
+4. To enable role-based access for Admin, Data Entry, and Public User roles.
+
+5. To deliver interactive dashboards with charts, trend analysis, and location-
+   wise rankings.
+
+6. To support KPI Snapshot generation and export of reports to PDF and DOCX.
+
+7. To send automated notifications and email alerts when thresholds are breached.
+
+8. To deploy the solution on a scalable cloud infrastructure.
+
+
+1.4 SCOPE OF THE PROJECT
+------------------------
+The scope of the Academic Green KPI Dashboard covers the following areas:
+
+In-Scope:
+  - Tracking four environmental metrics: Electricity, Water, Waste, and Carbon.
+  - Multi-location support within a single institution.
+  - User authentication, authorization, and role management.
+  - Data entry, target setting, and performance evaluation.
+  - Dashboard visualization, trend analysis, and summary reporting.
+  - Export functionality (PDF, DOCX).
+  - Notification system (in-app and email).
+  - Cloud deployment (Vercel + MongoDB Atlas).
+
+Out-of-Scope:
+  - IoT-based sensor integration for automated meter readings.
+  - Mobile (native iOS/Android) application.
+  - Multi-institution (multi-tenant) support in this version.
+
+
+1.5 ORGANIZATION OF THE REPORT
+-------------------------------
+Chapter 1 introduces the project, its background, objectives, and scope.
+Chapter 2 reviews existing systems and related literature.
+Chapter 3 describes the system analysis, requirements, and user roles.
+Chapter 4 covers system design including architecture, database, and API design.
+Chapter 5 details the implementation of the frontend and backend.
+Chapter 6 describes the testing strategies and results.
+Chapter 7 presents the results and discusses key findings.
+Chapter 8 concludes the report and outlines future enhancements.
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 2: LITERATURE SURVEY
+================================================================================
+
+2.1 EXISTING SYSTEMS & LIMITATIONS
+-----------------------------------
+Several sustainability tracking platforms exist, but each has notable
+limitations when applied to academic institutions:
+
+1. IBM Environmental Intelligence Suite: A powerful enterprise tool, but
+   is cost-prohibitive and complex for a single academic institution.
+
+2. Microsoft Sustainability Manager: Requires extensive Azure cloud
+   infrastructure and is primarily aimed at large corporations.
+
+3. SpreadSheet-Based Tracking (Manual): Widely used in Indian colleges.
+   Limitations include: no real-time access, prone to human error, no
+   automated status evaluation, and poor scalability.
+
+4. Verdafero / Resource Advisor (Oracle): Advanced IoT-integrated platforms
+   that require specialized hardware sensors, making them impractical for
+   most academic institutions in India.
+
+None of these solutions offer a low-cost, easy-to-deploy, web-based platform
+specifically tailored to the organizational structure and reporting requirements
+of academic institutions in India (NAAC, NIRF criteria).
+
+
+2.2 RELEVANT TECHNOLOGIES & FRAMEWORKS
+---------------------------------------
+
+A) MongoDB (NoSQL Database):
+   MongoDB is a document-oriented NoSQL database that stores data in flexible
+   JSON-like documents. It is ideal for this project because of the variability
+   in environmental data attributes across different metrics (some have location,
+   others do not). Its rich aggregation pipeline enables efficient MTD/YTD
+   calculations directly at the database level.
+
+B) Express.js:
+   A minimal and flexible Node.js web application framework that provides a
+   robust set of features for building RESTful APIs. It was chosen for its
+   simplicity, performance, and extensive middleware ecosystem.
+
+C) React 18 with TypeScript:
+   React is a declarative JavaScript library for building user interfaces.
+   TypeScript adds static typing, reducing runtime errors and improving code
+   maintainability, which is critical for a data-heavy dashboard application.
+
+D) Node.js:
+   Node.js provides a non-blocking, event-driven runtime environment that
+   handles concurrent API requests efficiently, which is important for a
+   multi-user dashboard system.
+
+E) Vite:
+   A next-generation build tool that provides near-instant Hot Module
+   Replacement (HMR) during development and produces optimized production
+   bundles significantly faster than traditional tools like Create React App.
+
+F) TanStack React Query:
+   A data-fetching and server-state management library for React. It handles
+   caching, background refetching, and synchronization with the server,
+   reducing the need for complex state management code.
+
+G) JWT (JSON Web Tokens):
+   An industry-standard RFC 7519 method for secure information transmission.
+   Used here for stateless authentication, avoiding the need for server-side
+   session storage.
+
+
+2.3 COMPARISON OF APPROACHES
+------------------------------
+  Feature             | Manual Spreadsheets | Enterprise Tools | This Project
+  --------------------|---------------------|-----------------|--------------
+  Cost                | Free                | Very High       | Free/Open
+  Real-time Access    | No                  | Yes             | Yes
+  Role-Based Access   | No                  | Yes             | Yes
+  Automated Alerts    | No                  | Yes             | Yes
+  Export Reports      | Manual              | Yes             | Yes (PDF/DOCX)
+  Custom to Academia  | No                  | No              | Yes
+  Cloud Deployable    | No                  | Yes             | Yes
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 3: SYSTEM ANALYSIS
+================================================================================
+
+3.1 FEASIBILITY STUDY
+---------------------
+Technical Feasibility:
+  The MERN stack is a well-proven combination of technologies. All required
+  libraries (React Query, Recharts, Mongoose, Nodemailer) are mature, open-
+  source, and well-documented. The team has the required expertise in JavaScript/
+  TypeScript full-stack development.
+
+Economic Feasibility:
+  - Frontend Hosting: Vercel Free Tier (0 cost).
+  - Backend Hosting: Vercel Serverless Functions or any free-tier cloud.
+  - Database: MongoDB Atlas Free Tier (512 MB, sufficient for prototype).
+  - All libraries used are open-source with no licensing costs.
+  Total estimated operational cost: Rs. 0 (for prototype/educational use).
+
+Operational Feasibility:
+  The system requires minimal training for data entry staff. The admin interface
+  is intuitive and the dashboard is publicly accessible without login, ensuring
+  transparency for all stakeholders.
+
+
+3.2 FUNCTIONAL REQUIREMENTS
+----------------------------
+FR-01: The system shall allow users to register and log in securely.
+FR-02: The system shall support three user roles: Admin, Data-Entry, and User.
+FR-03: Data Entry users shall be able to submit monthly data for energy, water,
+       waste, and carbon by location.
+FR-04: The system shall calculate MTD and YTD aggregates automatically.
+FR-05: The system shall assign a RAG status (GREEN/YELLOW/RED) to each metric
+       based on actual vs. target values.
+FR-06: Admins shall be able to set annual targets per metric and location.
+FR-07: The dashboard shall display KPI cards with current status in real time.
+FR-08: The system shall display a ranked list of highest-usage locations.
+FR-09: The system shall generate a Sustainability Score (0-100) for the YTD.
+FR-10: Users shall be able to view historical trends through interactive charts.
+FR-11: Admins shall be able to generate and save KPI Snapshots.
+FR-12: Users shall be able to export data reports as PDF or DOCX files.
+FR-13: The system shall send in-app and email notifications on threshold breach.
+FR-14: Admins shall be able to manage user accounts (create, approve, delete).
+FR-15: The system shall support password reset via email token link.
+
+
+3.3 NON-FUNCTIONAL REQUIREMENTS
+--------------------------------
+NFR-01: Performance - API responses shall be returned within 2 seconds under
+        normal load conditions.
+NFR-02: Security - All passwords shall be hashed using bcrypt (min. 10 rounds).
+        API endpoints shall be protected with JWT authentication.
+NFR-03: Scalability - The system architecture shall support horizontal scaling.
+NFR-04: Availability - Deployed application shall target 99.5% uptime via
+        Vercel and MongoDB Atlas managed infrastructure.
+NFR-05: Usability - The UI shall be responsive and functional on all screen
+        sizes from 320px (mobile) to 1920px (desktop).
+NFR-06: Maintainability - Code shall follow clean architecture principles,
+        with controllers, models, and routes clearly separated.
+NFR-07: Rate Limiting - Authentication endpoints shall be rate-limited to
+        20 requests per 15-minute window (brute-force protection).
+
+
+3.4 USER ROLES
+--------------
+1. Admin:
+   - Full access to all system features.
+   - Can manage users (approve, promote, delete).
+   - Can set and modify sustainability targets.
+   - Can generate KPI Snapshots.
+   - Receives threshold breach notifications.
+
+2. Data-Entry User:
+   - Can enter monthly environmental data by location.
+   - Cannot modify targets or manage users.
+   - Views their pending data submission status.
+
+3. Public User (Unauthenticated):
+   - Can view the dashboard, trends, and summary pages in read-only mode.
+   - Cannot enter data, modify targets, or access admin features.
+   - Promotes institutional transparency.
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 4: SYSTEM DESIGN
+================================================================================
+
+4.1 SYSTEM ARCHITECTURE
+------------------------
+The application follows a classic 3-Tier Client-Server architecture:
+
+  [Client Browser (React SPA)]
+          |
+          | HTTPS (REST API calls via Axios)
+          |
+  [Backend Server (Node.js + Express.js)]
+          |
+          | Mongoose ODM
+          |
+  [Database (MongoDB Atlas - Cloud)]
+
+Additionally:
+  - JWT tokens are stored on the client (localStorage) and sent with each
+    protected API request in the Authorization header.
+  - CORS is configured on the server to whitelist the frontend domain only.
+  - Rate limiting is applied at the server level on auth endpoints.
+
+
+4.2 DATABASE SCHEMA DESIGN
+---------------------------
+The MongoDB database uses separate collections for each entity:
+
+a) users collection (User Model):
+   Fields:
+   - _id         : ObjectId (auto-generated primary key)
+   - username    : String (required, unique)
+   - email       : String (required, unique)
+   - password    : String (bcrypt-hashed, required)
+   - role        : String (enum: "admin" | "data-entry" | "user", default: "user")
+   - resetToken  : String (for password reset flow)
+   - resetTokenExpiry : Date
+   - createdAt   : Date (default: now)
+
+b) energy_data collection (Energy Model):
+   Fields:
+   - metric   : String (default: "ENERGY")
+   - month    : String (e.g., "January")
+   - year     : Number
+   - actual   : Number (kWh consumed)
+   - target   : Number (kWh target)
+   - unit     : String (default: "kWh")
+   - source   : String (e.g., meter ID)
+   - location : String (e.g., "Block A")
+   - status   : String (enum: "GREEN" | "YELLOW" | "RED")
+   - createdAt: Date
+   Index: { year: 1, month: 1, location: 1 }
+
+c) water_data collection (Water Model):
+   Fields: same structure as Energy, unit defaults to "m³"
+   Index: { year: 1, month: 1, location: 1 }
+
+d) waste_data collection (Waste Model):
+   Fields: same structure as Energy, unit defaults to "%"
+   Note: Waste uses diversion rate (%), so status logic is inverted —
+         higher actual is BETTER (more waste diverted from landfill).
+   Index: { year: 1, month: 1, location: 1 }
+
+e) carbon_data collection (Carbon Model):
+   Fields: same structure as Energy, unit defaults to "tCO2e"
+   Note: Carbon does not have a location field.
+
+f) targets collection (Target Model):
+   Fields:
+   - metric      : String (enum: "ENERGY" | "WATER" | "WASTE")
+   - year        : Number
+   - targetValue : Number
+   - unit        : String
+   - location    : String
+
+g) kpi_snapshots collection (KpiSnapshot Model):
+   Fields:
+   - metric      : String (enum: "ENERGY" | "WATER" | "WASTE")
+   - month       : String
+   - year        : Number
+   - actual      : Number
+   - target      : Number
+   - status      : String (enum: "GREEN" | "YELLOW" | "RED")
+   - location    : String
+   - generatedAt : Date
+
+h) notifications collection (Notification Model):
+   Fields:
+   - type        : String (enum: "warning" | "info" | "success")
+   - title       : String
+   - message     : String
+   - kpi         : String (e.g., "ENERGY")
+   - location    : String
+   - actualValue : Number
+   - targetValue : Number
+   - read        : Boolean (default: false)
+   - resolved    : Boolean (default: false)
+   - resolvedAt  : Date
+   - userId      : ObjectId (ref: User)
+   - createdAt   : Date
+
+
+4.3 API DESIGN (RESTful ENDPOINTS)
+------------------------------------
+
+Authentication Routes (/api/auth):
+  POST /register         - Create a new user account
+  POST /login            - Login and receive JWT token
+  POST /forgot-password  - Send password reset email
+  POST /reset-password   - Reset password using token
+
+Energy Routes (/api/energy):
+  GET    /              - Fetch all energy records (filterable)
+  POST   /              - Add new energy data entry
+  PUT    /:id           - Update an existing energy record
+  DELETE /:id           - Delete an energy record
+
+Water Routes (/api/water):
+  [Same CRUD structure as /api/energy]
+
+Waste Routes (/api/waste):
+  [Same CRUD structure as /api/energy]
+
+Target Routes (/api/targets):
+  GET    /              - Get all targets (filterable by metric/year/location)
+  POST   /              - Create a new target
+  DELETE /:id           - Delete a target
+
+Dashboard Routes (/api/dashboard):
+  GET /summary          - MTD/YTD summary for all three metrics
+                          Query params: ?month=&year=&location=
+  GET /highest-usage    - Top 5 highest-usage locations per metric
+                          Query params: ?year=
+  POST /snapshot        - Generate and save a KPI snapshot
+  GET /snapshots        - Retrieve saved snapshots
+
+User Routes (/api/users):
+  GET    /              - Get all users (Admin only)
+  PUT    /:id/role      - Update a user's role (Admin only)
+  DELETE /:id           - Delete a user account (Admin only)
+
+Notification Routes (/api/notifications):
+  GET    /              - Get notifications for the authenticated user
+  PATCH  /:id/read      - Mark a notification as read
+  PATCH  /:id/resolve   - Mark a notification as resolved
+  DELETE /:id           - Delete a notification
+
+
+4.4 MODULE DESIGN
+-----------------
+The system is divided into the following key modules:
+
+1. Authentication Module:
+   - Handles user registration, login, JWT token generation, and password
+     reset (via tokenized email links using Nodemailer).
+
+2. Dashboard Module:
+   - Aggregates data from Energy, Water, and Waste collections using MongoDB's
+     aggregation pipeline.
+   - Calculates MTD and YTD summaries, applies RAG logic, computes the
+     overall Sustainability Score.
+   - Identifies highest-usage locations (top 5 ranked).
+
+3. Data Entry Module:
+   - CRUD operations for energy, water, waste, and carbon readings.
+   - Client-side form validation using React Hook Form + Zod.
+   - Ensures data quality before submission to the backend.
+
+4. Target Management Module:
+   - Admins can define annual targets per metric, location, and unit.
+   - Targets are retrieved by the Dashboard module for performance evaluation.
+
+5. Trends & Analytics Module:
+   - Provides time-series data for interactive line/bar charts (Recharts).
+   - Allows filtering by year, metric, and location.
+
+6. Reporting Module:
+   - KPI Snapshots freeze the current month's data for historical preservation.
+   - Export functionality generates formatted PDF and DOCX reports.
+
+7. Notification Module:
+   - In-app alerts stored in the notifications collection.
+   - Automated email alerts sent via SMTP/Nodemailer.
+
+8. Admin Module:
+   - User Management: View, promote/demote, or delete users.
+   - Department/Location Management: Manage campus location entries.
+
+
+4.5 RAG STATUS CALCULATION LOGIC
+---------------------------------
+The system uses different logic for Waste (where higher is better) vs.
+Energy and Water (where lower is better):
+
+For ENERGY and WATER:
+  IF actual <= target                   => GREEN  (on track)
+  IF actual <= target * 1.10 (10% over) => YELLOW (warning)
+  IF actual > target * 1.10             => RED    (over limit)
+
+For WASTE (diversion rate — higher is better):
+  IF actual >= target                   => GREEN  (meeting goal)
+  IF actual >= target * 0.90 (10% under)=> YELLOW (near miss)
+  IF actual < target * 0.90             => RED    (underperforming)
+
+
+4.6 SUSTAINABILITY SCORE FORMULA
+---------------------------------
+The Sustainability Score is computed as an average of per-metric scores:
+
+  For ENERGY/WATER (lower is better):
+    score = max(0, (1 - (actual - target) / target)) * 100
+
+  For WASTE (higher is better):
+    score = (actual / target) * 100
+
+  Overall Score = (energy_score + water_score + waste_score) / 3
+
+The score ranges from 0 to 100, where 100 indicates perfect adherence
+to all sustainability targets.
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 5: IMPLEMENTATION
+================================================================================
+
+5.1 TECHNOLOGY STACK (DETAILED)
+---------------------------------
+Frontend:
+  - React 18                  : UI component rendering
+  - TypeScript                : Static type safety
+  - Vite                      : Build tool with HMR
+  - Tailwind CSS              : Utility-first styling
+  - Shadcn UI / Radix UI      : Accessible UI primitives
+  - TanStack React Query v5   : Server state management
+  - Recharts                  : Data visualization charts
+  - React Hook Form + Zod     : Form management and validation
+  - React Router DOM v6       : Client-side routing
+  - Lucide React / Tabler Icons: Icon library
+  - jspdf                     : PDF export
+  - docx                      : DOCX document generation
+  - date-fns                  : Date formatting utilities
+  - Axios                     : HTTP client for API calls
+
+Backend:
+  - Node.js (v18+)            : Runtime environment
+  - Express.js v4             : Web framework
+  - Mongoose v8               : MongoDB ODM
+  - jsonwebtoken              : JWT generation and verification
+  - bcryptjs                  : Password hashing (10 rounds)
+  - cors                      : Cross-Origin Resource Sharing
+  - express-rate-limit        : Brute-force protection (20 req/15 min)
+  - nodemailer                : SMTP email sending
+  - dotenv                    : Environment variable management
+
+Database:
+  - MongoDB Atlas             : Cloud-hosted NoSQL database
+
+Deployment:
+  - Vercel                    : Frontend hosting (Static + CDN)
+  - Vercel Serverless / Cloud : Backend deployment
+  - MongoDB Atlas             : Database (Free M0 Cluster)
+
+
+5.2 BACKEND IMPLEMENTATION
+---------------------------
+The backend is a RESTful Express.js server organized with a clear separation
+of concerns:
+
+Directory Structure:
+  backend/
+    config/
+      db.js              - MongoDB connection via Mongoose
+    controllers/
+      auth.controller.js
+      dashboard.controller.js
+      energy.controller.js
+      water.controller.js
+      waste.controller.js
+      target.controller.js
+      user.controller.js
+      notification.controller.js
+    models/
+      User.js
+      Energy.js
+      Water.js
+      Waste.js
+      Carbon.js
+      KpiSnapshot.js
+      Target.js
+      Notification.js
+    routes/
+      auth.routes.js
+      energy.routes.js
+      water.routes.js
+      waste.routes.js
+      target.routes.js
+      dashboard.routes.js
+      user.routes.js
+      notification.routes.js
+    server.js            - App entry point
+
+Key Implementation Details:
+
+A) server.js:
+   - Configures CORS with a dynamic whitelist from FRONTEND_URL env variable,
+     supporting multiple origins (comma-separated).
+   - Applies express-rate-limit middleware to /api/auth to prevent brute-force.
+   - Connects to MongoDB Atlas and seeds the default admin account on startup.
+   - Registers all API route modules.
+   - Includes a global 404 handler and a centralized error-handling middleware.
+
+B) dashboard.controller.js (Core Logic):
+   - getMetricSummary(): Computes MTD/YTD for a given metric and model.
+     Uses MongoDB's aggregation pipeline ($group with $sum/$avg) for
+     all-location views, and standard .find() queries for single locations.
+     Waste uses averages (it's a rate, not a sum).
+   - getSummary(): Runs three parallel getMetricSummary() calls using
+     Promise.all() for near-simultaneous fetching. Returns JSON with
+     month, year, energy, water, waste objects.
+   - getHighestUsage(): Uses an aggregation pipeline to rank top 5 locations
+     by total actual usage. Waste ranks by lowest average diversion (worst).
+   - generateSnapshot(): Fetches current MTD summary and persists it as
+     an immutable KpiSnapshot document.
+
+C) Authentication (auth.controller.js):
+   - Registration: Hashes password with bcrypt, saves user with "user" role.
+   - Login: Compares bcrypt hash, issues signed JWT (expires in 7 days).
+   - Forgot Password: Generates a secure random token, saves expiry (1 hour),
+     sends a reset link via Nodemailer SMTP.
+   - Reset Password: Validates token and expiry, hashes new password, clears
+     the reset token.
+   - Seed Admin: On server start, creates a default admin account if none exists.
+
+
+5.3 FRONTEND IMPLEMENTATION
+-----------------------------
+The frontend is a single-page application built with React and Vite.
+
+Directory Structure:
+  frontend/
+    src/
+      components/
+        dashboard/        - KPICard, SustainabilityScore, AlertsPanel
+        layout/           - DashboardLayout, PublicLayout, AppSidebar
+        ui/               - Shadcn UI components (Button, Card, Badge, etc.)
+      contexts/
+        AuthContext.tsx   - Global auth state (user, token, login/logout)
+      hooks/
+        useApi.ts         - TanStack React Query hooks for all API calls
+      pages/
+        Dashboard.tsx     - Main KPI dashboard
+        DataEntry.tsx     - Form-based data input
+        Trends.tsx        - Historical trend charts
+        Summary.tsx       - YTD summary view
+        Performance.tsx   - Performance analysis
+        Reports.tsx       - Snapshot and export management
+        Notifications.tsx - Alert center
+        Settings.tsx      - User profile settings
+        Login.tsx         - Login form
+        Signup.tsx        - Registration form
+        ForgotPassword.tsx- Password reset request
+        ResetPassword.tsx - Password reset confirmation
+        admin/
+          UserManagement.tsx      - Admin user controls
+          TargetManagement.tsx    - Sustainability target setting
+          DepartmentManagement.tsx- Location management
+      services/
+        api.ts            - Axios instance + all API call functions
+      App.tsx             - Route definitions
+
+Key Implementation Details:
+
+A) AuthContext.tsx:
+   - Wraps the entire app with Context API to provide global auth state.
+   - Reads/writes JWT token to localStorage.
+   - Provides: user object, isAuthenticated boolean, login(), logout() functions.
+
+B) Dashboard.tsx:
+   - Fetches summary and highestUsage data via React Query hooks.
+   - Computes per-metric and overall Sustainability Scores client-side.
+   - Renders KPI cards with real-time status (GREEN/YELLOW/RED).
+   - Uses Progress bar components to visualize Usage vs. Target.
+   - Conditionally renders Admin Quick Actions or Data Entry Status
+     panels based on user role.
+   - Accessible to public users (unauthenticated) in a simplified layout.
+
+C) DataEntry.tsx:
+   - Tabbed form interface supporting Energy, Water, Waste, and Carbon input.
+   - Real-time status preview: calculates expected RAG status before saving.
+   - React Hook Form + Zod schemas provide inline validation feedback.
+
+D) Trends.tsx:
+   - Displays Recharts line charts for monthly trends per metric.
+   - Supports filtering by year and location via dropdown controls.
+
+E) Routing (App.tsx):
+   - Uses React Router v6 with <Routes> and <Route> components.
+   - Clean separation of public routes (Dashboard, Trends, Summary, Reports)
+     and authenticated routes (Notifications, Settings, Profile).
+   - Admin-only routes (/admin/users, /admin/targets, /admin/departments).
+
+
+5.4 AUTHENTICATION & SECURITY
+------------------------------
+1. Password Security: Bcrypt with 10 salt rounds. Passwords are never stored
+   in plaintext or transmitted in any response.
+
+2. JWT Authentication: Tokens are signed with a server-side secret key
+   (JWT_SECRET env variable) and expire after 7 days. Protected routes
+   validate the token via a middleware function before executing the handler.
+
+3. Role-Based Authorization: Middleware checks user.role against required
+   roles. Admin-only endpoints reject requests from Data-Entry or User roles.
+
+4. CORS Whitelisting: The server only accepts requests from the configured
+   FRONTEND_URL. Requests from unknown origins receive a CORS policy error.
+
+5. Rate Limiting: Authentication endpoints are capped at 20 requests per
+   15-minute window, preventing brute-force login attacks.
+
+6. Password Reset Security: Reset tokens are cryptographically random,
+   stored as hashed values, and expire after 1 hour. They are single-use
+   (cleared after successful reset).
+
+
+5.5 DEPLOYMENT
+--------------
+Frontend (Vercel):
+  - Connected to the GitHub repository's main branch.
+  - Auto-deploys on every git push.
+  - Environment variable VITE_API_URL set to the backend production URL.
+  - SPA fallback configured in vercel.json (all routes redirect to index.html).
+
+Backend:
+  - Deployed as a cloud Node.js application.
+  - Environment variables set via hosting platform's secure env vault:
+      MONGO_URI       - MongoDB Atlas connection string
+      JWT_SECRET      - JWT signing secret
+      FRONTEND_URL    - Whitelisted frontend origin(s) for CORS
+      EMAIL_USER      - SMTP sender email
+      EMAIL_PASS      - SMTP password / app password
+      NODE_ENV        - "production"
+
+Database (MongoDB Atlas):
+  - Free M0 cluster with IP Access List set to 0.0.0.0/0 for cloud access.
+  - Mongoose creates all collections automatically on first document insert.
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 6: TESTING
+================================================================================
+
+6.1 TESTING STRATEGY
+---------------------
+Testing was conducted across three levels:
+  1. Unit Testing - Testing individual controller functions with mock data.
+  2. Integration Testing - Testing API endpoints end-to-end using API clients.
+  3. User Acceptance Testing (UAT) - Manual walkthrough with actual users.
+
+
+6.2 UNIT TESTING
+-----------------
+Key functions tested:
+  - calcStatus(): Verified RAG logic for all three metric types with boundary
+    values. Confirmed WASTE inverted logic (higher actual = GREEN).
+  - getMetricSummary(): Verified correct MTD vs YTD calculation, correct
+    averaging for Waste, correct aggregation for all-location queries.
+  - computeScore() (frontend): Verified score calculation for all three
+    metric types, including edge cases (target = 0, actual = 0).
+
+
+6.3 INTEGRATION TESTING
+------------------------
+API endpoints tested using HTTP client tools:
+
+  Auth Endpoints:
+  - POST /api/auth/register   => 201 Created with user object.
+  - POST /api/auth/login      => 200 OK with token and user.
+  - POST /api/auth/login (bad pass) => 401 Unauthorized.
+
+  Dashboard Endpoints:
+  - GET /api/dashboard/summary?month=January&year=2025
+    => Returns energy, water, waste objects with MTD and YTD.
+  - GET /api/dashboard/highest-usage?year=2025
+    => Returns top 5 locations ranked by usage.
+
+  Rate Limit Test:
+  - 21 rapid POST /api/auth/login requests
+    => First 20 processed, 21st returns 429 Too Many Requests.
+
+
+6.4 USER ACCEPTANCE TESTING (UAT)
+-----------------------------------
+Test Scenarios:
+  TS-01: Admin logs in, views dashboard with live data. [PASS]
+  TS-02: Admin sets an annual energy target for Block A. [PASS]
+  TS-03: Data Entry user logs in and submits March 2025 water usage data. [PASS]
+  TS-04: Dashboard updates MTD summary immediately after new data entry. [PASS]
+  TS-05: Status changes to RED when actual water usage exceeds target by >10%. [PASS]
+  TS-06: Admin generates a KPI Snapshot for February 2025. [PASS]
+  TS-07: User exports report as PDF. [PASS]
+  TS-08: User attempts to access /admin/users without admin role. [PASS - Blocked]
+  TS-09: User requests password reset, receives email, resets successfully. [PASS]
+  TS-10: Unauthenticated user views dashboard and trends page. [PASS]
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 7: RESULTS AND DISCUSSION
+================================================================================
+
+7.1 DASHBOARD OVERVIEW
+-----------------------
+The dashboard successfully provides a one-page summary of the institution's
+environmental health. The three primary KPI cards display real-time MTD
+data with clear RAG status badges. The Usage vs. Target progress bars give
+an immediate visual comparison. The Sustainability Score gives the institution
+a single number representing overall environmental health.
+
+The Highest Usage Locations panel successfully identifies and ranks the worst-
+performing buildings, allowing administrators to direct their conservation
+efforts precisely.
+
+
+7.2 KPI METRIC TRACKING
+------------------------
+Energy Tracking: Monthly electricity consumption is tracked in kWh per
+location. The system correctly aggregates readings from multiple meters
+within the same location.
+
+Water Tracking: Monthly water consumption is tracked in m³. The system
+identifies high-usage months and locations for targeted interventions.
+
+Waste Diversion: The system correctly handles the inverted logic for waste,
+where HIGHER diversion rates improve the institution's RAG status.
+
+Carbon Footprint: Institutions can log their carbon emissions (tCO2e) to
+track their carbon neutrality progress over time.
+
+
+7.3 ANALYTICS & REPORTS
+------------------------
+The Trends module provides actionable historical insights. Year-over-year
+and month-over-month comparisons help identify seasonal patterns in resource
+consumption.
+
+The KPI Snapshot feature ensures that historical performance data is preserved
+immutably, which is valuable for longitudinal studies, NAAC green audit reports,
+and NIRF India Rankings submissions.
+
+================================================================================
+
+
+
+
+================================================================================
+              CHAPTER 8: CONCLUSION AND FUTURE WORK
+================================================================================
+
+8.1 CONCLUSION
+--------------
+The Academic Green KPI Dashboard successfully delivers a comprehensive,
+cloud-deployed, multi-role web application for environmental sustainability
+management in academic institutions.
+
+The system effectively replaces manual, fragmented tracking systems with an
+intelligent platform that provides real-time visibility, automated performance
+evaluation, role-based data governance, and structured reporting.
+
+By implementing the MERN stack, the project demonstrates how modern web
+technologies can be combined to build scalable, production-ready applications
+with minimal infrastructure cost. The RAG status engine, Sustainability Score
+algorithm, and KPI Snapshot mechanism are particularly valuable contributions
+that can serve as a blueprint for similar sustainability applications.
+
+The project directly supports India's growing emphasis on sustainable
+education through NAAC's Green Audit criteria and the NIRF's environmental
+and sustainability indicators.
+
+
+8.2 FUTURE ENHANCEMENTS
+------------------------
+The following enhancements are planned for future iterations:
+
+1. IoT Integration:
+   Integrate with smart meters and IoT sensors for automated data collection,
+   eliminating the need for manual data entry.
+
+2. Multi-Tenant Architecture:
+   Extend the platform to support multiple institutions under a single
+   deployment, with isolated data per institution.
+
+3. AI-Powered Predictive Analytics:
+   Integrate machine learning models to predict future resource consumption
+   and proactively alert administrators before targets are breached.
+
+4. Mobile Application:
+   Develop native iOS and Android apps for on-the-go monitoring and
+   data entry by field staff.
+
+5. Carbon Calculator Automation:
+   Automatically compute carbon footprint from energy and water readings
+   using standardized emission factors, removing the need for manual CO2e input.
+
+6. NAAC / NIRF Report Generator:
+   Build a specialized report template that auto-populates fields required
+   by NAAC Green Audit and NIRF India Rankings forms.
+
+7. Gamification for Green Initiatives:
+   Introduce leaderboards and achievement badges for departments that
+   consistently meet or exceed their sustainability targets.
+
+================================================================================
+
+
+
+
+================================================================================
+                            REFERENCES
+================================================================================
+
+[1] MongoDB Documentation - Aggregation Pipeline.
+    https://www.mongodb.com/docs/manual/aggregation/
+
+[2] Express.js Official Documentation.
+    https://expressjs.com/
+
+[3] React Official Documentation - React 18 Features.
+    https://react.dev/
+
+[4] TanStack React Query Documentation.
+    https://tanstack.com/query/latest/docs/framework/react/overview
+
+[5] JSON Web Token (JWT) - RFC 7519.
+    https://datatracker.ietf.org/doc/html/rfc7519
+
+[6] Bcrypt.js Documentation.
+    https://www.npmjs.com/package/bcryptjs
+
+[7] Recharts Documentation.
+    https://recharts.org/en-US/
+
+[8] Nodemailer Documentation.
+    https://nodemailer.com/
+
+[9] Tailwind CSS Documentation.
+    https://tailwindcss.com/docs
+
+[10] Shadcn UI Component Library.
+     https://ui.shadcn.com/
+
+[11] Zod TypeScript-First Schema Validation.
+     https://zod.dev/
+
+[12] Vite - Next Generation Frontend Tooling.
+     https://vitejs.dev/
+
+[13] Vercel Deployment Documentation.
+     https://vercel.com/docs
+
+[14] MongoDB Atlas - Cloud Database.
+     https://www.mongodb.com/cloud/atlas
+
+[15] NAAC Green Audit Framework for Academic Institutions.
+     https://naac.gov.in/
+
+================================================================================
+                         END OF REPORT
+================================================================================

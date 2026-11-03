@@ -73,5 +73,3 @@ Make sure you have [Node.js](https://nodejs.org/) installed along with a package
    ```
    This will start Vite on the configured localhost port.
 
-## License
-MIT
